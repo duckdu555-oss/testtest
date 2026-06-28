@@ -1,14 +1,14 @@
-// 회원가입 코드 설정 파일
-// HTML 안이 아니라 여기에서만 코드를 설정하면 됩니다.
+// 설정 파일
+// 가입 코드는 반드시 따옴표 안에 넣으세요.
 // 예시: window.SIGNUP_CODE = "1357";
 
-window.SIGNUP_CODE = "0000";
+// 회원가입 코드
+window.SIGNUP_CODE = "";
 
+// 관리자 계정
+window.ADMIN_ID = "";
+window.ADMIN_PASSWORD = "";
 
-// 관리자 페이지 로그인 설정
-// 예시:
-// window.ADMIN_ID = "admin";
-// window.ADMIN_PASSWORD = "1234";
-
-window.ADMIN_ID = "0000";
-window.ADMIN_PASSWORD = "0000";
+// 고객센터 텔레그램 주소
+// 예시: window.TELEGRAM_URL = "https://t.me/telegramid";
+window.TELEGRAM_URL = "";
