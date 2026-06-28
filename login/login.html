@@ -208,8 +208,7 @@
 
     button:active,
     .telegram-link:active {
-      transform: translateY(3px);
-      box-shadow:
+box-shadow:
         inset 0 2px 0 rgba(255, 255, 255, 0.35),
         inset 0 -2px 0 rgba(0, 0, 0, 0.12),
         0 1px 0 rgba(105, 0, 6, 0.18),
@@ -354,13 +353,11 @@
 
     button:active,
     .telegram-link:active {
-      transform: translateY(2px) scale(0.985);
-      filter: brightness(0.93);
+filter: brightness(0.93);
     }
 
     input:focus,
     select:focus {
-      transform: translateY(1px);
       box-shadow:
         inset 0 2px 4px rgba(0, 0, 0, 0.12),
         0 0 0 2px rgba(255, 255, 255, 0.45);
@@ -376,16 +373,24 @@
     }
 
   
-    /* 최소 보완: 입력칸 클릭 시 iOS 자동 확대/흔들림 완화 */
+    /* v46 최소 보완: 로그인 입력/버튼 클릭 시 위치 이동 제거 */
     #loginUserId,
     #loginPassword {
       font-size: 16px !important;
     }
 
-    html,
-    body {
-      overflow-x: hidden;
-      -webkit-text-size-adjust: 100%;
+    #loginUserId:focus,
+    #loginPassword:focus {
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    button:active,
+    .login-button:active,
+    .signup-button:active,
+    .code-btn:active {
+      transform: none !important;
+      -webkit-transform: none !important;
     }
 
   </style>
@@ -403,11 +408,11 @@
     <!-- 로그인폼 -->
     <section class="login-panel">
       <div class="input-box">
-        <input id="loginUserId" placeholder="ID">
+        <input id="loginUserId" placeholder="ID" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false">
       </div>
 
       <div class="input-box">
-        <input id="loginPassword" type="password" placeholder="PW">
+        <input id="loginPassword" placeholder="PW" type="password" autocomplete="current-password">
       </div>
 
       <button type="button" class="login-button btn-base login-btn" id="loginBtn">로그인</button>
