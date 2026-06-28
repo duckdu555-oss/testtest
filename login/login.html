@@ -414,12 +414,12 @@ box-shadow:
 
       <div class="sub-buttons">
         <button type="button" class="btn-base" id="signupOpenBtn">회원가입</button>
-        <button type="button" class="btn-base">무기명가입</button>
+        <button id="guestSignupBtn" type="button" class="btn-base">무기명가입</button>
       </div>
 
       <!-- 고객센터: 링크는 나중에 href만 바꾸면 됨 -->
       <a href="#" class="telegram-link btn-base">
-        <span class="customer-text">고객센터</span>
+        <span id="customerCenterBtn" class="customer-text">고객센터</span>
       </a>
     </section>
 
@@ -455,7 +455,7 @@ box-shadow:
       });
 
       if (!member) {
-        loginMessage.textContent = "아이디 또는 비밀번호가 맞지 않습니다.";
+        loginMessage.textContent = "존재하지 않는 정보입니다.";
         return;
       }
 
@@ -582,5 +582,28 @@ box-shadow:
     }
   </script>
 
+<script>
+    const customerCenterBtn = document.getElementById("customerCenterBtn");
+    const guestSignupBtn = document.getElementById("guestSignupBtn");
+
+    if (customerCenterBtn) {
+      customerCenterBtn.addEventListener("click", function () {
+        const telegramUrl = String(window.TELEGRAM_URL || "").trim();
+
+        if (!telegramUrl) {
+          alert("고객센터 주소가 아직 설정되지 않았습니다.");
+          return;
+        }
+
+        location.href = telegramUrl;
+      });
+    }
+
+    if (guestSignupBtn) {
+      guestSignupBtn.addEventListener("click", function () {
+        alert("준비중입니다.");
+      });
+    }
+  </script>
 </body>
 </html>
