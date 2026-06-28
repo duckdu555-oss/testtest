@@ -358,7 +358,7 @@ filter: brightness(0.93);
 
     input:focus,
     select:focus {
-      box-shadow:
+box-shadow:
         inset 0 2px 4px rgba(0, 0, 0, 0.12),
         0 0 0 2px rgba(255, 255, 255, 0.45);
     }
@@ -373,22 +373,17 @@ filter: brightness(0.93);
     }
 
   
-    /* v46 최소 보완: 로그인 입력/버튼 클릭 시 위치 이동 제거 */
+    /* v47 최소 보완: 입력/버튼 클릭 시 위치 이동 제거 */
     #loginUserId,
     #loginPassword {
       font-size: 16px !important;
     }
 
     #loginUserId:focus,
-    #loginPassword:focus {
-      transform: none !important;
-      -webkit-transform: none !important;
-    }
-
+    #loginPassword:focus,
     button:active,
-    .login-button:active,
-    .signup-button:active,
-    .code-btn:active {
+    .btn-base:active,
+    .login-button:active {
       transform: none !important;
       -webkit-transform: none !important;
     }
@@ -418,7 +413,7 @@ filter: brightness(0.93);
       <button type="button" class="login-button btn-base login-btn" id="loginBtn">로그인</button>
 
       <div class="sub-buttons">
-        <button type="button" class="btn-base" type="button" id="signupOpenBtn">회원가입</button>
+        <button type="button" class="btn-base" id="signupOpenBtn">회원가입</button>
         <button type="button" class="btn-base">무기명가입</button>
       </div>
 
@@ -516,7 +511,6 @@ filter: brightness(0.93);
   </div>
 
   <script>
-
     const signupOpenBtn = document.getElementById("signupOpenBtn");
     const codeModal = document.getElementById("codeModal");
     const signupCodeInput = document.getElementById("signupCodeInput");
@@ -525,17 +519,25 @@ filter: brightness(0.93);
     const codeCancelBtn = document.getElementById("codeCancelBtn");
 
     function openCodeModal() {
+      if (!codeModal || !signupCodeInput || !codeError) return;
+
       codeError.textContent = "";
       signupCodeInput.value = "";
       codeModal.classList.add("active");
-      setTimeout(() => signupCodeInput.focus(), 50);
+
+      setTimeout(function () {
+        signupCodeInput.focus();
+      }, 50);
     }
 
     function closeCodeModal() {
+      if (!codeModal) return;
       codeModal.classList.remove("active");
     }
 
     function checkSignupCode() {
+      if (!signupCodeInput || !codeError) return;
+
       const value = signupCodeInput.value.trim();
       const savedCode = String(window.SIGNUP_CODE || "").trim();
 
@@ -551,31 +553,33 @@ filter: brightness(0.93);
       }
     }
 
-      if (value === window.SIGNUP_CODE) {
-        location.href = "../sign/sign.html";
-      } else {
-        codeError.textContent = "코드 인식 불가";
-      }
-    }
-
     if (signupOpenBtn) {
       signupOpenBtn.addEventListener("click", openCodeModal);
     }
 
-    codeCheckBtn.addEventListener("click", checkSignupCode);
-    codeCancelBtn.addEventListener("click", closeCodeModal);
+    if (codeCheckBtn) {
+      codeCheckBtn.addEventListener("click", checkSignupCode);
+    }
 
-    signupCodeInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        checkSignupCode();
-      }
-    });
+    if (codeCancelBtn) {
+      codeCancelBtn.addEventListener("click", closeCodeModal);
+    }
 
-    codeModal.addEventListener("click", function(e) {
-      if (e.target === codeModal) {
-        closeCodeModal();
-      }
-    });
+    if (signupCodeInput) {
+      signupCodeInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          checkSignupCode();
+        }
+      });
+    }
+
+    if (codeModal) {
+      codeModal.addEventListener("click", function (e) {
+        if (e.target === codeModal) {
+          closeCodeModal();
+        }
+      });
+    }
   </script>
 
 </body>
