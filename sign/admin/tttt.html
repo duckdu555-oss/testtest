@@ -1,1 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+  <title>관리자</title>
+
+  <style>
+    @font-face {
+      font-family: 'Jalnan';
+      src: url('https://cdn.jsdelivr.net/gh/webfontworld/goodchoice/Jalnan.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #b7b7b7;
+      font-family: 'Jalnan', Arial, sans-serif;
+      padding: 8px 4px 20px;
+      color: #111;
+    }
+
+    .admin-login {
+      width: 100%;
+      max-width: 330px;
+      margin: 80px auto 0;
+      padding: 20px 16px;
+      border-radius: 9px;
+      background: #d0d0d0;
+      border: 1px solid rgba(70, 70, 70, 0.24);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+      text-align: center;
+    }
+
+    .login-title {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .admin-login input {
+      width: 100%;
+      height: 42px;
+      margin-bottom: 9px;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      outline: none;
+      padding: 0 12px;
+      background: #eeeeee;
+      color: #111;
+      font-family: inherit;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .admin-login button {
+      width: 100%;
+      height: 42px;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      background: #8a8a8a;
+      color: #000;
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .login-error {
+      min-height: 20px;
+      margin-top: 9px;
+      color: #b00020;
+      font-size: 13px;
+    }
+
+    .admin-wrap {
+      display: none;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .admin-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 7px;
+    }
+
+    .admin-title {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .admin-actions button {
+      height: 28px;
+      padding: 0 6px;
+      border: 1px solid rgba(60, 60, 60, 0.25);
+      border-radius: 4px;
+      background: #8a8a8a;
+      color: #000;
+      font-family: inherit;
+      font-size: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .table-box {
+      width: 100%;
+      overflow-x: hidden;
+      background: #d0d0d0;
+      border: 1px solid rgba(70, 70, 70, 0.24);
+      border-radius: 6px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid rgba(80, 80, 80, 0.18);
+      border-right: 1px solid rgba(80, 80, 80, 0.13);
+      padding: 3px 1px;
+      font-size: 7px;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th {
+      background: #9a9a9a;
+      color: #000;
+    }
+
+    td {
+      background: #eeeeee;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+
+    .col-action { width: 17%; }
+    .col-status { width: 6%; }
+    .col-nick { width: 8%; }
+    .col-name { width: 7%; }
+    .col-bank { width: 9%; }
+    .col-holder { width: 7%; }
+    .col-account { width: 12%; }
+    .col-phone { width: 12%; }
+    .col-id { width: 8%; }
+    .col-pass { width: 7%; }
+    .col-expass { width: 7%; }
+
+    .action-buttons {
+      display: flex;
+      gap: 1px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .status-btn {
+      height: 20px;
+      min-width: 25px;
+      padding: 0 2px;
+      border-radius: 3px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      font-size: 7px;
+      cursor: pointer;
+      color: #000;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+
+    .approve-btn {
+      background: #9fd39f;
+    }
+
+    .reject-btn {
+      background: #d89a9a;
+    }
+
+    .pending-btn {
+      background: #d8d08f;
+    }
+
+    .status-approved {
+      color: #006400;
+    }
+
+    .status-rejected {
+      color: #9a0000;
+    }
+
+    .status-pending {
+      color: #444;
+    }
+
+    .empty {
+      padding: 20px;
+      text-align: center;
+      color: #333;
+      font-size: 13px;
+    }
+
+    @media (max-width: 430px) {
+      th,
+      td {
+        font-size: 6px;
+        padding: 3px 1px;
+      }
+
+      .status-btn {
+        height: 19px;
+        min-width: 22px;
+        font-size: 6px;
+        padding: 0 1px;
+      }
+
+      .admin-title {
+        font-size: 12px;
+      }
+
+      .admin-actions button {
+        height: 26px;
+        font-size: 9px;
+        padding: 0 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="admin-login" id="adminLoginBox">
+    <div class="login-title">관리자 로그인</div>
+    <input id="adminId" type="text" placeholder="아이디" autocomplete="off">
+    <input id="adminPassword" type="password" placeholder="비밀번호" autocomplete="off">
+    <button type="button" id="adminLoginBtn">로그인</button>
+    <div class="login-error" id="adminLoginError"></div>
+  </div>
+
+  <div class="admin-wrap" id="adminWrap">
+    <div class="admin-head">
+      <div class="admin-title">회원가입 관리자</div>
+      <div class="admin-actions">
+        <button type="button" id="refreshBtn">새로고침</button>
+        <button type="button" id="logoutBtn">로그아웃</button>
+        <button type="button" id="clearBtn">전체삭제</button>
+      </div>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-action">승인/거절/대기</th>
+            <th class="col-status">상태</th>
+            <th class="col-nick">닉네임</th>
+            <th class="col-name">이름</th>
+            <th class="col-bank">은행정보</th>
+            <th class="col-holder">예금주</th>
+            <th class="col-account">계좌번호</th>
+            <th class="col-phone">휴대폰번호</th>
+            <th class="col-id">아이디</th>
+            <th class="col-pass">비밀번호</th>
+            <th class="col-expass">환전비번</th>
+          </tr>
+        </thead>
+        <tbody id="memberTable"></tbody>
+      </table>
+      <div class="empty" id="emptyText">저장된 회원가입 정보가 없습니다.</div>
+    </div>
+  </div>
+
+  <script src="../../setting/setting.js"></script>
+
+  <script>
+    const STORAGE_KEY = "signupMembers";
+    const ADMIN_SESSION_KEY = "adminLoggedIn";
+
+    const adminLoginBox = document.getElementById("adminLoginBox");
+    const adminWrap = document.getElementById("adminWrap");
+    const adminId = document.getElementById("adminId");
+    const adminPassword = document.getElementById("adminPassword");
+    const adminLoginBtn = document.getElementById("adminLoginBtn");
+    const adminLoginError = document.getElementById("adminLoginError");
+
+    const memberTable = document.getElementById("memberTable");
+    const emptyText = document.getElementById("emptyText");
+
+    function getMembers() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveMembers(members) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function statusText(status) {
+      if (status === "approved") return "승인";
+      if (status === "rejected") return "거절";
+      return "대기";
+    }
+
+    function statusClass(status) {
+      if (status === "approved") return "status-approved";
+      if (status === "rejected") return "status-rejected";
+      return "status-pending";
+    }
+
+    function getSortedMembersWithIndex() {
+      const order = { approved: 1, rejected: 2, pending: 3 };
+      return getMembers()
+        .map(function(member, originalIndex) {
+          return { member: member, originalIndex: originalIndex };
+        })
+        .sort(function(a, b) {
+          const aStatus = a.member.status || "pending";
+          const bStatus = b.member.status || "pending";
+          return (order[aStatus] || 3) - (order[bStatus] || 3);
+        });
+    }
+
+    function renderMembers() {
+      const wrappedMembers = getSortedMembersWithIndex();
+      memberTable.innerHTML = "";
+
+      if (!wrappedMembers.length) {
+        emptyText.style.display = "block";
+        return;
+      }
+
+      emptyText.style.display = "none";
+
+      wrappedMembers.forEach(function(item) {
+        const member = item.member;
+        const originalIndex = item.originalIndex;
+
+        if (!member.status) {
+          member.status = "pending";
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="col-action">
+            <div class="action-buttons">
+              <button type="button" class="status-btn approve-btn" data-index="${originalIndex}" data-status="approved">승인</button>
+              <button type="button" class="status-btn reject-btn" data-index="${originalIndex}" data-status="rejected">거절</button>
+              <button type="button" class="status-btn pending-btn" data-index="${originalIndex}" data-status="pending">대기</button>
+            </div>
+          </td>
+          <td class="col-status ${statusClass(member.status)}">${statusText(member.status)}</td>
+          <td class="col-nick">${escapeHtml(member.nickname)}</td>
+          <td class="col-name">${escapeHtml(member.realName)}</td>
+          <td class="col-bank">${escapeHtml(member.bank)}</td>
+          <td class="col-holder">${escapeHtml(member.accountHolder)}</td>
+          <td class="col-account">${escapeHtml(member.accountNumber)}</td>
+          <td class="col-phone">${escapeHtml(member.phone)}</td>
+          <td class="col-id">${escapeHtml(member.userId)}</td>
+          <td class="col-pass">${escapeHtml(member.password)}</td>
+          <td class="col-expass">${escapeHtml(member.exchangePassword)}</td>
+        `;
+        memberTable.appendChild(tr);
+      });
+
+      // 기존 데이터 중 상태가 비어있는 회원은 대기로 저장
+      const members = getMembers();
+      let changed = false;
+      members.forEach(function(member) {
+        if (!member.status) {
+          member.status = "pending";
+          changed = true;
+        }
+      });
+      if (changed) saveMembers(members);
+    }
+
+    function setMemberStatus(index, status) {
+      const members = getMembers();
+      if (!members[index]) return;
+
+      members[index].status = status;
+      saveMembers(members);
+      renderMembers();
+    }
+
+    memberTable.addEventListener("click", function(e) {
+      const button = e.target.closest(".status-btn");
+      if (!button) return;
+
+      const index = Number(button.dataset.index);
+      const status = button.dataset.status;
+
+      if (!Number.isNaN(index) && status) {
+        setMemberStatus(index, status);
+      }
+    });
+
+    function showAdmin() {
+      adminLoginBox.style.display = "none";
+      adminWrap.style.display = "block";
+      renderMembers();
+    }
+
+    function runAdminLogin() {
+      const inputId = adminId.value.trim();
+      const inputPassword = adminPassword.value.trim();
+
+      if (!window.ADMIN_ID || !window.ADMIN_PASSWORD) {
+        adminLoginError.textContent = "관리자 계정이 아직 설정되지 않았습니다.";
+        return;
+      }
+
+      if (inputId === window.ADMIN_ID && inputPassword === window.ADMIN_PASSWORD) {
+        sessionStorage.setItem(ADMIN_SESSION_KEY, "1");
+        showAdmin();
+      } else {
+        adminLoginError.textContent = "관리자 아이디 또는 비밀번호가 맞지 않습니다.";
+      }
+    }
+
+    adminLoginBtn.addEventListener("click", runAdminLogin);
+    adminPassword.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") runAdminLogin();
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", renderMembers);
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      location.reload();
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", function() {
+      if (confirm("전체 삭제할까요?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderMembers();
+      }
+    });
+
+    if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "1") {
+      showAdmin();
+    }
+  </script>
+</body>
+</html>
