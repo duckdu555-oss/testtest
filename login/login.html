@@ -388,6 +388,38 @@ box-shadow:
       -webkit-transform: none !important;
     }
 
+  
+    /* 고객센터 클릭 범위: 글씨가 아니라 폼 박스 전체 */
+    #customerCenterBtn {
+      cursor: pointer;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .customer-center-click-box {
+      cursor: pointer;
+    }
+
+  
+    /* 로그인 안내 문구 */
+    #loginMessage,
+    .login-message {
+      min-height: 22px;
+      margin-top: 9px;
+      margin-bottom: 2px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #b00020;
+      text-align: center;
+      line-height: 1.35;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
   </style>
 </head>
 
@@ -440,12 +472,21 @@ box-shadow:
       }
     }
 
+    function showLoginMessage(text, color) {
+      if (!loginMessage) return;
+      loginMessage.textContent = text;
+      loginMessage.style.color = color || "#b00020";
+      loginMessage.style.display = "block";
+      loginMessage.style.visibility = "visible";
+      loginMessage.style.opacity = "1";
+    }
+
     function runLoginCheck() {
       const userId = loginUserId ? loginUserId.value.trim() : "";
       const password = loginPassword ? loginPassword.value.trim() : "";
 
       if (!userId || !password) {
-        loginMessage.textContent = "아이디와 비밀번호를 입력하세요.";
+        showLoginMessage("아이디 비밀번호를 입력해주세요", "#b00020");
         return;
       }
 
@@ -455,7 +496,7 @@ box-shadow:
       });
 
       if (!member) {
-        loginMessage.textContent = "존재하지 않는 정보입니다.";
+        showLoginMessage("존재하지 않는 정보입니다.", "#b00020");
         return;
       }
 
@@ -465,13 +506,11 @@ box-shadow:
       }
 
       if (member.status === "rejected") {
-        loginMessage.style.color = "#b00020";
-        loginMessage.textContent = "회원가입이 거절되었습니다.";
+        showLoginMessage("회원가입이 거절되었습니다.", "#b00020");
         return;
       }
 
-      loginMessage.style.color = "#006a9e";
-      loginMessage.textContent = "텔레그램 문의";
+      showLoginMessage("텔레그램 문의", "#006a9e");
     }
 
     if (loginBtn) {
@@ -480,6 +519,14 @@ box-shadow:
 
     if (loginPassword) {
       loginPassword.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          runLoginCheck();
+        }
+      });
+    }
+
+    if (loginUserId) {
+      loginUserId.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
           runLoginCheck();
         }
@@ -586,21 +633,34 @@ box-shadow:
     const customerCenterBtn = document.getElementById("customerCenterBtn");
     const guestSignupBtn = document.getElementById("guestSignupBtn");
 
+    function openTelegramCenter() {
+      const telegramUrl = String(window.TELEGRAM_URL || "").trim();
+
+      if (!telegramUrl) {
+        alert("고객센터 주소가 아직 설정되지 않았습니다.");
+        return;
+      }
+
+      location.href = telegramUrl;
+    }
+
     if (customerCenterBtn) {
-      customerCenterBtn.addEventListener("click", function () {
-        const telegramUrl = String(window.TELEGRAM_URL || "").trim();
+      const customerBox = customerCenterBtn.closest("button, a, .btn-base, .contact-box, .customer-box, .customer-center, .telegram-box, div") || customerCenterBtn;
 
-        if (!telegramUrl) {
-          alert("고객센터 주소가 아직 설정되지 않았습니다.");
-          return;
-        }
+      customerBox.classList.add("customer-center-click-box");
+      customerBox.addEventListener("click", openTelegramCenter);
 
-        location.href = telegramUrl;
-      });
+      if (customerBox !== customerCenterBtn) {
+        customerCenterBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          openTelegramCenter();
+        });
+      }
     }
 
     if (guestSignupBtn) {
-      guestSignupBtn.addEventListener("click", function () {
+      const guestBox = guestSignupBtn.closest("button, a, .btn-base, div") || guestSignupBtn;
+      guestBox.addEventListener("click", function () {
         alert("준비중입니다.");
       });
     }
