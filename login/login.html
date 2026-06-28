@@ -392,39 +392,50 @@
     }
 
   
-    /* 모바일 클릭/포커스 시 화면 흔들림 방지 */
-    html {
+    /* 로그인 화면 고정: 입력칸 클릭 시 위아래 움직임 방지 */
+    html,
+    body {
       width: 100%;
+      height: 100%;
       min-height: 100%;
-      overflow-x: hidden;
+      overflow: hidden !important;
       overscroll-behavior: none;
       -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
     }
 
     body {
-      width: 100%;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      overscroll-behavior: none;
-      touch-action: manipulation;
+      position: fixed;
+      inset: 0;
+      margin: 0;
       -webkit-tap-highlight-color: transparent;
     }
 
     input,
     button {
       font-size: 16px !important;
-      touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    .login-card,
-    .login-box,
-    .wrap,
-    .container {
+    #loginUserId,
+    #loginPassword {
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+    }
+
+    #loginUserId:focus,
+    #loginPassword:focus {
+      outline: none;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    .code-modal,
+    #codeModal {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 9999 !important;
     }
 
   </style>
@@ -442,7 +453,7 @@
     <!-- 로그인폼 -->
     <section class="login-panel">
       <div class="input-box">
-        <input id="loginUserId" placeholder="ID" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <input id="loginUserId" placeholder="ID" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="username">
       </div>
 
       <div class="input-box">
@@ -559,10 +570,15 @@
     const codeCancelBtn = document.getElementById("codeCancelBtn");
 
     function openCodeModal() {
-      codeError.textContent = "";
-      signupCodeInput.value = "";
-      codeModal.classList.add("active");
-      setTimeout(() => signupCodeInput.focus(), 50);
+      const modal = document.getElementById("codeModal");
+      if (modal) {
+        modal.style.display = "flex";
+        modal.classList.add("active", "show", "open");
+      }
+      const input = document.getElementById("signupCodeInput");
+      const error = document.getElementById("codeError");
+      if (input) input.value = "";
+      if (error) error.textContent = "";
     }
 
     function closeCodeModal() {
@@ -570,13 +586,22 @@
     }
 
     function checkSignupCode() {
-      const value = signupCodeInput.value.trim();
+      const input = document.getElementById("signupCodeInput");
+      const error = document.getElementById("codeError");
+      const value = input ? input.value.trim() : "";
       const savedCode = String(window.SIGNUP_CODE || "").trim();
 
       if (!savedCode) {
-        codeError.textContent = "가입 코드가 아직 설정되지 않았습니다.";
+        if (error) error.textContent = "가입 코드가 아직 설정되지 않았습니다.";
         return;
       }
+
+      if (value === savedCode) {
+        location.href = "../sign/sign.html";
+      } else {
+        if (error) error.textContent = "코드 인식 불가";
+      }
+    }
 
       if (value === savedCode) {
         location.href = "../sign/sign.html";
@@ -613,40 +638,47 @@
   </script>
 
   <script>
-    // 로그인 화면에서 클릭/입력 포커스 시 화면 위치가 튀는 현상 방지
+    // 회원가입 버튼/가입코드 모달 연결 고정 + 로그인 화면 스크롤 고정
     (function () {
-      let lockedX = 0;
-      let lockedY = 0;
-
-      function rememberScroll() {
-        lockedX = window.scrollX || 0;
-        lockedY = window.scrollY || 0;
+      function lockScroll() {
+        window.scrollTo(0, 0);
       }
 
-      function restoreScroll() {
-        window.scrollTo(lockedX, lockedY);
-      }
-
-      document.addEventListener("touchstart", rememberScroll, { passive: true });
-      document.addEventListener("mousedown", rememberScroll, { passive: true });
-
-      document.querySelectorAll("input, button").forEach(function (el) {
-        el.addEventListener("focus", function () {
-          rememberScroll();
-          requestAnimationFrame(restoreScroll);
-          setTimeout(restoreScroll, 60);
-          setTimeout(restoreScroll, 160);
-        }, { passive: true });
-
-        el.addEventListener("click", function () {
-          requestAnimationFrame(restoreScroll);
-          setTimeout(restoreScroll, 60);
-        }, { passive: true });
+      window.addEventListener("load", lockScroll, { passive: true });
+      window.addEventListener("resize", lockScroll, { passive: true });
+      document.addEventListener("focusin", function () {
+        requestAnimationFrame(lockScroll);
+        setTimeout(lockScroll, 80);
       });
 
-      window.addEventListener("resize", function () {
-        requestAnimationFrame(restoreScroll);
-      }, { passive: true });
+      function openSignupCodeModal() {
+        const modal = document.getElementById("codeModal");
+        const input = document.getElementById("signupCodeInput");
+        const error = document.getElementById("codeError");
+
+        if (!modal) return;
+
+        modal.style.display = "flex";
+        modal.classList.add("active", "show", "open");
+
+        if (input) input.value = "";
+        if (error) error.textContent = "";
+      }
+
+      window.openSignupCodeModal = openSignupCodeModal;
+
+      document.addEventListener("click", function (e) {
+        const target = e.target.closest("button, a, div");
+        if (!target) return;
+
+        const text = (target.textContent || "").trim();
+
+        if (text === "회원가입") {
+          e.preventDefault();
+          e.stopPropagation();
+          openSignupCodeModal();
+        }
+      }, true);
     })();
   </script>
 
