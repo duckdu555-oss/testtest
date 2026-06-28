@@ -162,30 +162,45 @@
 
     .table-box {
       width: 100%;
-      overflow-x: hidden;
+      overflow-x: auto;
+      overflow-y: visible;
       background: #d0d0d0;
       border: 1px solid rgba(70, 70, 70, 0.24);
       border-radius: 6px;
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
+      min-width: 980px;
       border-collapse: collapse;
       text-align: center;
-      table-layout: fixed;
+      table-layout: auto;
     }
 
     th,
     td {
       border-bottom: 1px solid rgba(80, 80, 80, 0.18);
       border-right: 1px solid rgba(80, 80, 80, 0.13);
-      padding: 3px 1px;
-      font-size: 7px;
-      line-height: 1.25;
+      padding: 4px 3px;
+      font-size: 8px;
+      line-height: 1.35;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      vertical-align: middle;
+    }
+
+    th,
+    .col-action,
+    .col-status,
+    .col-img {
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
 
     th {
