@@ -11,4 +11,4 @@ window.ADMIN_PASSWORD = "0000";
 
 // 고객센터 텔레그램 주소
 // 예시: window.TELEGRAM_URL = "https://t.me/1234";
-window.TELEGRAM_URL = "https://t.me/1234";
+window.TELEGRAM_URL = "https://t.me/joinchat/okkDeR9JP1E4OTg1";
