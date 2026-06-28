@@ -375,6 +375,22 @@
       color: #b00020;
     }
 
+  
+    /* 아이디 입력칸 포커스 시 화면이 밑으로 튀는 현상 완화 */
+    #loginUserId {
+      font-size: 16px !important;
+      line-height: 1;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    #loginUserId:focus {
+      transform: translateZ(0) !important;
+      -webkit-transform: translateZ(0) !important;
+    }
+
   </style>
 </head>
 
@@ -390,7 +406,7 @@
     <!-- 로그인폼 -->
     <section class="login-panel">
       <div class="input-box">
-        <input id="loginUserId">
+        <input id="loginUserId" autocapitalize="off" autocorrect="off" spellcheck="false">
       </div>
 
       <div class="input-box">
@@ -474,7 +490,7 @@
     }
   </script>
 
-  <script src="../setting/setting.js"></script>
+  <script src="../setting/setting.js?v=38"></script>
 
   <script>
     // 모바일에서 더블탭 확대 방지
@@ -519,11 +535,19 @@
 
     function checkSignupCode() {
       const value = signupCodeInput.value.trim();
+      const savedCode = String(window.SIGNUP_CODE || "").trim();
 
-      if (!window.SIGNUP_CODE) {
+      if (!savedCode) {
         codeError.textContent = "가입 코드가 아직 설정되지 않았습니다.";
         return;
       }
+
+      if (value === savedCode) {
+        location.href = "../sign/sign.html";
+      } else {
+        codeError.textContent = "코드 인식 불가";
+      }
+    }
 
       if (value === window.SIGNUP_CODE) {
         location.href = "../sign/sign.html";
@@ -550,6 +574,27 @@
         closeCodeModal();
       }
     });
+  </script>
+
+
+  <script>
+    // 아이디 칸만 클릭할 때 화면이 살짝 아래로 튀는 현상 방지
+    const loginIdFixInput = document.getElementById("loginUserId");
+
+    if (loginIdFixInput) {
+      loginIdFixInput.addEventListener("focus", function() {
+        const currentX = window.scrollX;
+        const currentY = window.scrollY;
+
+        requestAnimationFrame(function() {
+          window.scrollTo(currentX, currentY);
+        });
+
+        setTimeout(function() {
+          window.scrollTo(currentX, currentY);
+        }, 80);
+      }, { passive: true });
+    }
   </script>
 
 </body>
