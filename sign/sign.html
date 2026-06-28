@@ -396,13 +396,7 @@
           <option>토스뱅크</option>
         </select>
       </div>
-
-      <div class="form-row">
-        <label for="accountHolder">예금주</label>
-        <input id="accountHolder" name="accountHolder" type="text" pattern="[가-힣a-zA-Z\s]+" title="한글 또는 영문만 입력" required>
-      </div>
-
-      <div class="form-row">
+<div class="form-row">
         <label for="accountNumber">계좌번호</label>
         <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="[0-9]*" required>
       </div>
@@ -523,8 +517,7 @@
       const verifyCode = document.getElementById("verifyCode").value.trim();
       const realName = document.getElementById("realName").value.trim();
       const bank = document.getElementById("bank").value.trim();
-      const accountHolderValue = document.getElementById("accountHolder").value.trim();
-      const accountNumber = document.getElementById("accountNumber").value.trim();
+const accountNumber = document.getElementById("accountNumber").value.trim();
       const exchangePassword = document.getElementById("exchangePassword").value.trim();
 
       if (!requireValue("userId", "아이디를 입력하세요.")) return;
@@ -534,7 +527,6 @@
       if (!requireValue("verifyCode", "인증번호를 입력하세요.")) return;
       if (!requireValue("realName", "이름을 입력하세요.")) return;
       if (!bank) return setError("bank", "은행정보를 선택하세요.");
-      if (!requireValue("accountHolder", "예금주를 입력하세요.")) return;
       if (!requireValue("accountNumber", "계좌번호를 입력하세요.")) return;
       if (!requireValue("exchangePassword", "환전비밀번호를 입력하세요.")) return;
 
@@ -554,12 +546,7 @@
         noticeText.textContent = "휴대폰 인증을 먼저 완료하세요.";
         return;
       }
-
-      if (!/^[가-힣a-zA-Z\s]+$/.test(accountHolderValue)) {
-        return setError("accountHolder", "예금주는 한글 또는 영문만 입력하세요.");
-      }
-
-      if (!/^[0-9]+$/.test(accountNumber)) {
+if (!/^[0-9]+$/.test(accountNumber)) {
         return setError("accountNumber", "계좌번호는 숫자만 입력하세요.");
       }
 
@@ -585,7 +572,7 @@
         nickname: nickname,
         realName: realName,
         bank: bank,
-        accountHolder: accountHolderValue,
+        accountHolder: realName,
         accountNumber: accountNumber,
         phone: phone,
         userId: userId,
