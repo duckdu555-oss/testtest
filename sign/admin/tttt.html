@@ -158,17 +158,16 @@
       font-weight: bold;
     }
 
-    .col-action { width: 17%; }
-    .col-status { width: 6%; }
-    .col-nick { width: 8%; }
-    .col-name { width: 7%; }
-    .col-bank { width: 9%; }
-    .col-holder { width: 7%; }
-    .col-account { width: 12%; }
-    .col-phone { width: 12%; }
-    .col-id { width: 8%; }
-    .col-pass { width: 7%; }
-    .col-expass { width: 7%; }
+    .col-action { width: 18%; }
+    .col-status { width: 7%; }
+    .col-nick { width: 9%; }
+    .col-name { width: 9%; }
+    .col-bank { width: 10%; }
+        .col-account { width: 13%; }
+    .col-phone { width: 13%; }
+    .col-id { width: 9%; }
+    .col-pass { width: 6%; }
+    .col-expass { width: 6%; }
 
     .action-buttons {
       display: flex;
@@ -276,8 +275,7 @@
             <th class="col-nick">닉네임</th>
             <th class="col-name">이름</th>
             <th class="col-bank">은행정보</th>
-            <th class="col-holder">예금주</th>
-            <th class="col-account">계좌번호</th>
+<th class="col-account">계좌번호</th>
             <th class="col-phone">휴대폰번호</th>
             <th class="col-id">아이디</th>
             <th class="col-pass">비밀번호</th>
@@ -290,7 +288,7 @@
     </div>
   </div>
 
-  <script src="../../setting/setting.js"></script>
+  <script src="../../setting/setting.js?v=38"></script>
 
   <script>
     const STORAGE_KEY = "signupMembers";
@@ -384,8 +382,7 @@
           <td class="col-nick">${escapeHtml(member.nickname)}</td>
           <td class="col-name">${escapeHtml(member.realName)}</td>
           <td class="col-bank">${escapeHtml(member.bank)}</td>
-          <td class="col-holder">${escapeHtml(member.accountHolder)}</td>
-          <td class="col-account">${escapeHtml(member.accountNumber)}</td>
+<td class="col-account">${escapeHtml(member.accountNumber)}</td>
           <td class="col-phone">${escapeHtml(member.phone)}</td>
           <td class="col-id">${escapeHtml(member.userId)}</td>
           <td class="col-pass">${escapeHtml(member.password)}</td>
@@ -437,12 +434,15 @@
       const inputId = adminId.value.trim();
       const inputPassword = adminPassword.value.trim();
 
-      if (!window.ADMIN_ID || !window.ADMIN_PASSWORD) {
+      const savedAdminId = String(window.ADMIN_ID || "").trim();
+      const savedAdminPassword = String(window.ADMIN_PASSWORD || "").trim();
+
+      if (!savedAdminId || !savedAdminPassword) {
         adminLoginError.textContent = "관리자 계정이 아직 설정되지 않았습니다.";
         return;
       }
 
-      if (inputId === window.ADMIN_ID && inputPassword === window.ADMIN_PASSWORD) {
+      if (inputId === savedAdminId && inputPassword === savedAdminPassword) {
         sessionStorage.setItem(ADMIN_SESSION_KEY, "1");
         showAdmin();
       } else {
