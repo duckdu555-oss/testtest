@@ -1,1 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+  <title>회원가입</title>
+
+  <style>
+    @font-face {
+      font-family: 'Jalnan';
+      src: url('https://cdn.jsdelivr.net/gh/webfontworld/goodchoice/Jalnan.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      touch-action: manipulation;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #b7b7b7;
+      font-family: 'Jalnan', 'Do Hyeon', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 26px 16px 34px;
+      color: #111;
+    }
+
+    .signup-wrap {
+      width: 100%;
+      max-width: 390px;
+    }
+
+    .logo-area {
+      width: 100%;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-area img {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .signup-panel {
+      width: 100%;
+      padding: 15px 15px 17px;
+      border-radius: 9px;
+      background: #d0d0d0;
+      border: 1px solid rgba(80, 80, 80, 0.18);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .signup-title {
+      text-align: center;
+      font-size: 23px;
+      margin-bottom: 15px;
+      color: #111;
+      letter-spacing: 1px;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      display: block;
+      width: 100%;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #171717;
+      text-align: center;
+      letter-spacing: 0.4px;
+    }
+
+    .form-row input,
+    .form-row select {
+      width: 100%;
+      height: 43px;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      outline: none;
+      padding: 0 12px;
+      background: #eeeeee;
+      color: #111;
+      font-family: inherit;
+      font-size: 14px;
+      text-align: center;
+      text-align-last: center;
+    }
+
+    .form-row select option {
+      font-family: Arial, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    .phone-row,
+    .verify-row {
+      display: flex;
+      gap: 7px;
+    }
+
+    .phone-row input,
+    .verify-row input {
+      flex: 1;
+    }
+
+    .small-btn {
+      width: 105px;
+      height: 43px;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      background: #8f8f8f;
+      color: #000;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      margin-top: 10px;
+      border-radius: 7px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      background: #8a8a8a;
+      color: #000;
+      font-family: inherit;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 12px;
+      text-align: center;
+      color: #222;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .notice {
+      margin-top: 8px;
+      min-height: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: #004f9e;
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding-top: 18px;
+      }
+
+      .logo-area img {
+        max-width: 300px;
+      }
+
+      .signup-panel {
+        padding: 16px 13px;
+      }
+
+      .small-btn {
+        width: 96px;
+        font-size: 12px;
+      }
+    }
+  
+    /* 입력/버튼 클릭 효과 */
+    .form-row input,
+    .form-row select,
+    .small-btn,
+    .submit-btn {
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .form-row input:focus,
+    .form-row select:focus {
+      transform: translateY(1px);
+      background: #f4f4f4;
+      box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.13),
+        0 0 0 2px rgba(255, 255, 255, 0.50);
+    }
+
+    .small-btn:active,
+    .submit-btn:active {
+      transform: translateY(2px) scale(0.985);
+      filter: brightness(0.92);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.22),
+        0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .form-row.error input,
+    .form-row.error select {
+      border-color: rgba(190, 0, 20, 0.7);
+      box-shadow:
+        inset 0 1px 3px rgba(190, 0, 20, 0.12),
+        0 0 0 2px rgba(190, 0, 20, 0.12);
+    }
+
+  
+    /* 회원가입 버튼 빛나는 효과 */
+    .shine-btn {
+      position: relative;
+      overflow: hidden;
+      animation: signupGlow 2.2s ease-in-out infinite;
+    }
+
+    .shine-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+      );
+      transform: skewX(-18deg);
+      animation: signupShine 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes signupGlow {
+      0%, 100% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          0 5px 12px rgba(0, 0, 0, 0.16);
+      }
+      50% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          0 0 16px rgba(255, 255, 255, 0.75),
+          0 7px 18px rgba(0, 0, 0, 0.20);
+      }
+    }
+
+    @keyframes signupShine {
+      0% { left: -120%; }
+      45% { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    .complete-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0, 0, 0, 0.32);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    .complete-modal.active {
+      display: flex;
+    }
+
+    .complete-box {
+      width: 100%;
+      max-width: 290px;
+      padding: 28px 18px 18px;
+      border-radius: 10px;
+      background: #d7d7d7;
+      border: 1px solid rgba(70, 70, 70, 0.28);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
+      text-align: center;
+    }
+
+    .complete-title {
+      margin-bottom: 22px;
+      font-size: 22px;
+      color: #111;
+      text-align: center;
+    }
+
+    .complete-confirm {
+      width: 130px;
+      height: 42px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 7px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      background: #8a8a8a;
+      color: #000;
+      font-family: inherit;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="signup-wrap">
+
+    <div class="logo-area">
+      <img src="../image/logo.png" alt="로고">
+    </div>
+
+    <form class="signup-panel" id="signupForm">
+<div class="form-row">
+        <label for="userId">아이디</label>
+        <input id="userId" name="userId" type="text" minlength="4" autocomplete="username" required>
+      </div>
+
+      <div class="form-row">
+        <label for="password">비밀번호</label>
+        <input id="password" name="password" type="password" minlength="4" autocomplete="new-password" required>
+      </div>
+
+      <div class="form-row">
+        <label for="nickname">닉네임</label>
+        <input id="nickname" name="nickname" type="text" required>
+      </div>
+
+      <div class="form-row">
+        <label for="phone">휴대폰번호</label>
+        <div class="phone-row">
+          <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]*" required>
+          <button class="small-btn" type="button" id="sendCodeBtn">인증번호전송</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="verifyCode">인증번호</label>
+        <div class="verify-row">
+          <input id="verifyCode" name="verifyCode" type="text" inputmode="numeric" required>
+          <button class="small-btn" type="button" id="verifyBtn">확인</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="realName">이름</label>
+        <input id="realName" name="realName" type="text" required>
+      </div>
+
+      <div class="form-row">
+        <label for="bank">은행정보</label>
+        <select id="bank" name="bank" required>
+                    <option value="">은행 선택</option>
+          <option>카카오뱅크</option>
+          <option>SC제일은행</option>
+          <option>국민은행</option>
+          <option>신한은행</option>
+          <option>우리은행</option>
+          <option>기업은행</option>
+          <option>케이뱅크</option>
+          <option>씨티은행</option>
+          <option>광주은행</option>
+          <option>수협은행</option>
+          <option>신협은행</option>
+          <option>우체국</option>
+          <option>부산은행</option>
+          <option>제주은행</option>
+          <option>새마을금고</option>
+          <option>전북은행</option>
+          <option>하나은행</option>
+          <option>농협은행</option>
+          <option>IM뱅크</option>
+          <option>경남은행</option>
+          <option>산업은행</option>
+          <option>산림조합</option>
+          <option>토스뱅크</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="accountHolder">예금주</label>
+        <input id="accountHolder" name="accountHolder" type="text" pattern="[가-힣a-zA-Z\s]+" title="한글 또는 영문만 입력" required>
+      </div>
+
+      <div class="form-row">
+        <label for="accountNumber">계좌번호</label>
+        <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="[0-9]*" required>
+      </div>
+
+      <div class="form-row">
+        <label for="exchangePassword">환전비밀번호</label>
+        <input id="exchangePassword" name="exchangePassword" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" title="숫자 4자리" required>
+      </div>
+
+      <div class="notice" id="noticeText"></div>
+
+      <button class="submit-btn shine-btn" type="submit">회원가입</button>
+</form>
+  </div>
+
+
+  <div class="complete-modal" id="completeModal">
+    <div class="complete-box">
+      <div class="complete-title">회원가입 완료</div>
+      <button type="button" class="complete-confirm" id="completeConfirmBtn">확인</button>
+    </div>
+  </div>
+
+
+  <script>
+    let verified = false;
+    const STORAGE_KEY = "signupMembers";
+    const noticeText = document.getElementById("noticeText");
+    const completeModal = document.getElementById("completeModal");
+    const completeConfirmBtn = document.getElementById("completeConfirmBtn");
+
+    function getMembers() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveMembers(members) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+    }
+
+    function onlyNumbers(el) {
+      el.value = el.value.replace(/[^0-9]/g, "");
+    }
+
+    ["phone", "verifyCode", "accountNumber", "exchangePassword"].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", function() {
+          onlyNumbers(el);
+        });
+      }
+    });
+
+    function setError(inputId, message) {
+      const input = document.getElementById(inputId);
+      if (!input) return false;
+
+      const row = input.closest(".form-row");
+      if (row) row.classList.add("error");
+
+      noticeText.textContent = message;
+      input.focus();
+      return false;
+    }
+
+    function clearErrors() {
+      document.querySelectorAll(".form-row.error").forEach(function(row) {
+        row.classList.remove("error");
+      });
+      noticeText.textContent = "";
+    }
+
+    function requireValue(inputId, message) {
+      const input = document.getElementById(inputId);
+      if (!input || !input.value.trim()) {
+        return setError(inputId, message);
+      }
+      return true;
+    }
+
+    document.getElementById("sendCodeBtn").addEventListener("click", function() {
+      const phone = document.getElementById("phone").value.trim();
+
+      if (!/^[0-9]+$/.test(phone)) {
+        setError("phone", "휴대폰 번호는 숫자만 입력하세요.");
+        return;
+      }
+
+      clearErrors();
+      noticeText.textContent = "인증번호가 전송되었습니다.";
+    });
+
+    document.getElementById("verifyBtn").addEventListener("click", function() {
+      const code = document.getElementById("verifyCode").value.trim();
+
+      if (!/^[0-9]+$/.test(code)) {
+        verified = false;
+        setError("verifyCode", "인증번호는 숫자만 입력하세요.");
+        return;
+      }
+
+      clearErrors();
+      verified = true;
+      noticeText.textContent = "인증번호 확인 완료";
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      clearErrors();
+
+      const userId = document.getElementById("userId").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const nickname = document.getElementById("nickname").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const verifyCode = document.getElementById("verifyCode").value.trim();
+      const realName = document.getElementById("realName").value.trim();
+      const bank = document.getElementById("bank").value.trim();
+      const accountHolderValue = document.getElementById("accountHolder").value.trim();
+      const accountNumber = document.getElementById("accountNumber").value.trim();
+      const exchangePassword = document.getElementById("exchangePassword").value.trim();
+
+      if (!requireValue("userId", "아이디를 입력하세요.")) return;
+      if (!requireValue("password", "비밀번호를 입력하세요.")) return;
+      if (!requireValue("nickname", "닉네임을 입력하세요.")) return;
+      if (!requireValue("phone", "휴대폰 번호를 입력하세요.")) return;
+      if (!requireValue("verifyCode", "인증번호를 입력하세요.")) return;
+      if (!requireValue("realName", "이름을 입력하세요.")) return;
+      if (!bank) return setError("bank", "은행정보를 선택하세요.");
+      if (!requireValue("accountHolder", "예금주를 입력하세요.")) return;
+      if (!requireValue("accountNumber", "계좌번호를 입력하세요.")) return;
+      if (!requireValue("exchangePassword", "환전비밀번호를 입력하세요.")) return;
+
+      if (userId.length < 4) {
+        return setError("userId", "아이디는 4글자 이상 입력하세요.");
+      }
+
+      if (password.length < 4) {
+        return setError("password", "비밀번호는 4글자 이상 입력하세요.");
+      }
+
+      if (!/^[0-9]+$/.test(phone)) {
+        return setError("phone", "휴대폰 번호는 숫자만 입력하세요.");
+      }
+
+      if (!verified) {
+        noticeText.textContent = "휴대폰 인증을 먼저 완료하세요.";
+        return;
+      }
+
+      if (!/^[가-힣a-zA-Z\s]+$/.test(accountHolderValue)) {
+        return setError("accountHolder", "예금주는 한글 또는 영문만 입력하세요.");
+      }
+
+      if (!/^[0-9]+$/.test(accountNumber)) {
+        return setError("accountNumber", "계좌번호는 숫자만 입력하세요.");
+      }
+
+      if (!/^[0-9]{4}$/.test(exchangePassword)) {
+        return setError("exchangePassword", "환전비밀번호는 숫자 4자리입니다.");
+      }
+
+      const members = getMembers();
+
+      if (members.some(member => member.userId === userId)) {
+        return setError("userId", "이미 사용중인 아이디입니다.");
+      }
+
+      if (members.some(member => member.nickname === nickname)) {
+        return setError("nickname", "이미 사용중인 닉네임입니다.");
+      }
+
+      if (members.some(member => member.accountNumber === accountNumber)) {
+        return setError("accountNumber", "이미 등록된 계좌번호입니다.");
+      }
+
+      const member = {
+        nickname: nickname,
+        realName: realName,
+        bank: bank,
+        accountHolder: accountHolderValue,
+        accountNumber: accountNumber,
+        phone: phone,
+        userId: userId,
+        password: password,
+        exchangePassword: exchangePassword,
+        status: "pending",
+        createdAt: new Date().toISOString()
+      };
+
+      members.push(member);
+      saveMembers(members);
+
+      completeModal.classList.add("active");
+    });
+
+    completeConfirmBtn.addEventListener("click", function() {
+      location.href = "../login/login.html";
+    });
+
+    // 더블탭 확대 방지
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", function(event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+  </script>
+</body>
+</html>
