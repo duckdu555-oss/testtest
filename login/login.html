@@ -1,1 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>홈</title>
 
+  <style>
+    /* 웹폰트 연결: 여기어때 잘난체 */
+    @font-face {
+      font-family: 'Jalnan';
+      src: url('https://cdn.jsdelivr.net/gh/webfontworld/goodchoice/Jalnan.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #c9c9c9;
+      font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 340px;
+      min-height: 100vh;
+      padding: 70px 22px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 로그인폼 밖 12시 방향 큰 로고 */
+    .top-logo {
+      width: 100%;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .top-logo img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      max-height: none;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-placeholder {
+      width: 92%;
+      max-width: 300px;
+      height: 100px;
+      border-radius: 24px;
+      border: 2px dashed rgba(0, 0, 0, 0.18);
+      color: rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* 로그인폼 전체 박스: 바깥 ㅁ 테두리 제거, 로고 폭과 대칭 */
+    .login-panel {
+      width: 100%;
+      padding: 18px 0 0;
+      border-radius: 0;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: none;
+      box-shadow: none;
+    }
+
+    .input-box {
+      margin-bottom: 11px;
+    }
+
+    .input-box input {
+      width: 100%;
+      height: 44px;
+      padding: 0 15px;
+      border-radius: 5px;
+      outline: none;
+      background: #e9e9e9;
+      color: #222;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
+      border: 2px solid rgba(45, 30, 32, 0.42);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.75),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.08),
+        0 2px 0 rgba(105, 0, 6, 0.18),
+        0 5px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .input-box input::placeholder {
+      color: rgba(0, 0, 0, 0.48);
+    }
+
+    .btn-base {
+      border: 2px solid rgba(45, 30, 32, 0.42);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+        0 2px 0 rgba(105, 0, 6, 0.20),
+        0 6px 10px rgba(0, 0, 0, 0.08);
+      color: #ffffff;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+      transition: 0.12s;
+    }
+
+    /* 로그인 버튼: 회원가입/무기명가입과 동일한 진한 회색 */
+    .login-button {
+      width: 100%;
+      height: 46px;
+      margin-top: 4px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 900;
+      font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
+      background: linear-gradient(180deg, #bdbdbd 0%, #8f8f8f 48%, #6f6f6f 100%);
+      color: #000000;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .sub-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    /* 회원가입 / 무기명가입 폼: 로그인폼보다 진한 회색 */
+    .sub-buttons button {
+      flex: 1;
+      height: 44px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+      font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
+      background: linear-gradient(180deg, #bdbdbd 0%, #8f8f8f 48%, #6f6f6f 100%);
+      color: #000000;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    /* 고객센터 폼: 파란색 */
+    .telegram-link {
+      margin-top: 12px;
+      width: 100%;
+      height: 44px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      text-decoration: none;
+      position: relative;
+      font-size: 14px;
+      font-weight: 900;
+      font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
+      background: linear-gradient(180deg, #5ecbff 0%, #1f9eea 48%, #0b6fc6 100%);
+    }
+
+    .customer-text {
+      color: #003f7a;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+
+    button,
+    input,
+    .telegram-link {
+      touch-action: manipulation;
+    }
+
+    button:active,
+    .telegram-link:active {
+      transform: translateY(3px);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+        0 1px 0 rgba(105, 0, 6, 0.18),
+        0 3px 7px rgba(0, 0, 0, 0.06);
+    }
+  
+    /* 회원가입 코드 입력 모달 */
+    .code-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0, 0, 0, 0.32);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    .code-modal.active {
+      display: flex;
+    }
+
+    .code-box {
+      width: 100%;
+      max-width: 330px;
+      padding: 22px 18px 18px;
+      border-radius: 10px;
+      background: #d8d8d8;
+      border: 1px solid rgba(90, 90, 90, 0.35);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+      text-align: center;
+    }
+
+    .code-title {
+      margin-bottom: 14px;
+      color: #111;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .code-input {
+      width: 100%;
+      height: 46px;
+      padding: 0 13px;
+      margin-bottom: 10px;
+      border-radius: 7px;
+      border: 1px solid rgba(80, 80, 80, 0.35);
+      outline: none;
+      background: #eeeeee;
+      color: #111;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .code-error {
+      min-height: 20px;
+      margin-bottom: 12px;
+      color: #b00020;
+      font-size: 14px;
+    }
+
+    .code-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .code-actions button {
+      flex: 1;
+      height: 42px;
+      border-radius: 7px;
+      border: 1px solid rgba(60, 60, 60, 0.22);
+      background: #969696;
+      color: #000;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .code-actions .cancel-btn {
+      background: #c4c4c4;
+    }
+
+  
+    /* 로그인 버튼 빛나는 효과 */
+    .login-btn,
+    button.login-btn {
+      position: relative;
+      overflow: hidden;
+      animation: loginGlow 2.2s ease-in-out infinite;
+    }
+
+    .login-btn::before,
+    button.login-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+      );
+      transform: skewX(-18deg);
+      animation: loginShine 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes loginGlow {
+      0%, 100% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          0 5px 12px rgba(0, 0, 0, 0.16);
+      }
+      50% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          0 0 16px rgba(255, 255, 255, 0.75),
+          0 7px 18px rgba(0, 0, 0, 0.20);
+      }
+    }
+
+    @keyframes loginShine {
+      0% { left: -120%; }
+      45% { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    button,
+    input,
+    select,
+    .telegram-link {
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease,
+        background 0.12s ease;
+    }
+
+    button:active,
+    .telegram-link:active {
+      transform: translateY(2px) scale(0.985);
+      filter: brightness(0.93);
+    }
+
+    input:focus,
+    select:focus {
+      transform: translateY(1px);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.12),
+        0 0 0 2px rgba(255, 255, 255, 0.45);
+    }
+
+  
+    .login-message {
+      min-height: 20px;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #b00020;
+    }
+
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- 로그인폼 밖 12시 방향 큰 로고 -->
+    <div class="top-logo">
+      <img src="../image/logo.png" alt="로고" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="logo-placeholder" style="display:none;">LOGO</div>
+    </div>
+
+    <!-- 로그인폼 -->
+    <section class="login-panel">
+      <div class="input-box">
+        <input id="loginUserId">
+      </div>
+
+      <div class="input-box">
+        <input id="loginPassword">
+      </div>
+
+      <button type="button" class="login-button btn-base login-btn" id="loginBtn">로그인</button>
+
+      <div class="sub-buttons">
+        <button type="button" class="btn-base" type="button" id="signupOpenBtn">회원가입</button>
+        <button type="button" class="btn-base">무기명가입</button>
+      </div>
+
+      <!-- 고객센터: 링크는 나중에 href만 바꾸면 됨 -->
+      <a href="#" class="telegram-link btn-base">
+        <span class="customer-text">고객센터</span>
+      </a>
+    </section>
+
+  </main>
+
+  <script>
+    const LOGIN_STORAGE_KEY = "signupMembers";
+    const loginBtn = document.getElementById("loginBtn");
+    const loginUserId = document.getElementById("loginUserId");
+    const loginPassword = document.getElementById("loginPassword");
+    const loginMessage = document.getElementById("loginMessage");
+
+    function getLoginMembers() {
+      try {
+        return JSON.parse(localStorage.getItem(LOGIN_STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function runLoginCheck() {
+      const userId = loginUserId ? loginUserId.value.trim() : "";
+      const password = loginPassword ? loginPassword.value.trim() : "";
+
+      if (!userId || !password) {
+        loginMessage.textContent = "아이디와 비밀번호를 입력하세요.";
+        return;
+      }
+
+      const members = getLoginMembers();
+      const member = members.find(function(item) {
+        return item.userId === userId && item.password === password;
+      });
+
+      if (!member) {
+        loginMessage.textContent = "아이디 또는 비밀번호가 맞지 않습니다.";
+        return;
+      }
+
+      if (member.status === "approved") {
+        location.href = "../main/main.html";
+        return;
+      }
+
+      if (member.status === "rejected") {
+        loginMessage.style.color = "#b00020";
+        loginMessage.textContent = "회원가입이 거절되었습니다.";
+        return;
+      }
+
+      loginMessage.style.color = "#006a9e";
+      loginMessage.textContent = "텔레그램 문의";
+    }
+
+    if (loginBtn) {
+      loginBtn.addEventListener("click", runLoginCheck);
+    }
+
+    if (loginPassword) {
+      loginPassword.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          runLoginCheck();
+        }
+      });
+    }
+  </script>
+
+  <script src="../js/config.js"></script>
+
+  <script>
+    // 모바일에서 더블탭 확대 방지
+    document.addEventListener('dblclick', function (e) {
+      e.preventDefault();
+    }, { passive: false });
+  </script>
+
+  <div class="login-message" id="loginMessage"></div>
+
+  <div class="code-modal" id="codeModal">
+    <div class="code-box">
+      <div class="code-title">가입 코드</div>
+      <input class="code-input" id="signupCodeInput" type="text" placeholder="" autocomplete="off">
+      <div class="code-error" id="codeError"></div>
+      <div class="code-actions">
+        <button type="button" class="cancel-btn" id="codeCancelBtn">취소</button>
+        <button type="button" id="codeCheckBtn">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const signupOpenBtn = document.getElementById("signupOpenBtn");
+    const codeModal = document.getElementById("codeModal");
+    const signupCodeInput = document.getElementById("signupCodeInput");
+    const codeError = document.getElementById("codeError");
+    const codeCheckBtn = document.getElementById("codeCheckBtn");
+    const codeCancelBtn = document.getElementById("codeCancelBtn");
+
+    function openCodeModal() {
+      codeError.textContent = "";
+      signupCodeInput.value = "";
+      codeModal.classList.add("active");
+      setTimeout(() => signupCodeInput.focus(), 50);
+    }
+
+    function closeCodeModal() {
+      codeModal.classList.remove("active");
+    }
+
+    function checkSignupCode() {
+      const value = signupCodeInput.value.trim();
+
+      if (!window.SIGNUP_CODE) {
+        codeError.textContent = "가입 코드가 아직 설정되지 않았습니다.";
+        return;
+      }
+
+      if (value === window.SIGNUP_CODE) {
+        location.href = "../sign/sign.html";
+      } else {
+        codeError.textContent = "코드 인식 불가";
+      }
+    }
+
+    if (signupOpenBtn) {
+      signupOpenBtn.addEventListener("click", openCodeModal);
+    }
+
+    codeCheckBtn.addEventListener("click", checkSignupCode);
+    codeCancelBtn.addEventListener("click", closeCodeModal);
+
+    signupCodeInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        checkSignupCode();
+      }
+    });
+
+    codeModal.addEventListener("click", function(e) {
+      if (e.target === codeModal) {
+        closeCodeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
