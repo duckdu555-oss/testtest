@@ -847,12 +847,12 @@ box-shadow:
       });
 
       if (!idMember) {
-        showLoginMessage("존재하지 않는 정보입니다.", "#b00020", true);
+        showLoginMessage("존재하지 않는 아이디입니다.", "#b00020", true);
         return;
       }
 
       if (String(idMember.password || "") !== password) {
-        showLoginMessage("비밀번호가 맞지 않습니다.", "#b00020", true);
+        showLoginMessage("비밀번호가 올바르지 않습니다.", "#b00020", true);
         return;
       }
 
@@ -872,7 +872,7 @@ box-shadow:
         return;
       }
 
-      showLoginMessage("텔레그램 문의", "#006a9e", true);
+      showLoginMessage("가입 대기 중입니다.", "#b00020", true);
     }
 
     if (loginBtn) {
