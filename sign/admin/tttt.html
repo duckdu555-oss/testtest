@@ -425,7 +425,7 @@
       <table>
         <thead>
           <tr>
-            <th class="col-action">승인/거절/대기</th>
+            <th class="col-action">승인/거절</th>
             <th class="col-status">상태</th>
             <th class="col-nick">닉네임</th>
             <th class="col-name">이름</th>
@@ -497,7 +497,7 @@
     function statusText(status) {
       if (status === "approved") return "승인";
       if (status === "rejected") return "거절";
-      return "대기";
+      return "";
     }
 
     function statusClass(status) {
@@ -555,16 +555,20 @@
           member.status = "pending";
         }
 
+        const currentStatusText = statusText(member.status);
+        const statusHtml = currentStatusText
+          ? `<span class="status-badge ${statusClass(member.status)}">${currentStatusText}</span>`
+          : "";
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td class="col-action">
             <div class="action-buttons">
               <button type="button" class="status-btn approve-btn" data-index="${originalIndex}" data-status="approved">승인</button>
               <button type="button" class="status-btn reject-btn" data-index="${originalIndex}" data-status="rejected">거절</button>
-              <button type="button" class="status-btn pending-btn" data-index="${originalIndex}" data-status="pending">대기</button>
             </div>
           </td>
-          <td class="col-status"><span class="status-badge ${statusClass(member.status)}">${statusText(member.status)}</span></td>
+          <td class="col-status">${statusHtml}</td>
           <td class="col-nick">${escapeHtml(member.nickname)}</td>
           <td class="col-name">${escapeHtml(member.realName)}</td>
           <td class="col-bank">${escapeHtml(member.bank)}</td>
