@@ -147,9 +147,9 @@
       font-size: 16px;
       font-weight: 900;
       font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
-      background: linear-gradient(180deg, #bdbdbd 0%, #8f8f8f 48%, #6f6f6f 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #e2e3e2 48%, #bfc1bf 100%);
       color: #000000;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
     }
 
     .sub-buttons {
@@ -167,9 +167,9 @@
       font-size: 14px;
       font-weight: 900;
       font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
-      background: linear-gradient(180deg, #bdbdbd 0%, #8f8f8f 48%, #6f6f6f 100%);
-      color: #000000;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+      background: linear-gradient(180deg, #ffffff 0%, #e2e3e8 52%, #c9cbd2 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.22);
     }
 
     /* 고객센터 폼: 파란색 */
@@ -187,12 +187,12 @@
       font-size: 14px;
       font-weight: 900;
       font-family: 'Jalnan', 'Do Hyeon', fantasy, sans-serif;
-      background: linear-gradient(180deg, #5ecbff 0%, #1f9eea 48%, #0b6fc6 100%);
+      background: linear-gradient(180deg, #d8f6ff 0%, #64d0fb 52%, #2aa9e7 100%);
     }
 
     .customer-text {
-      color: #003f7a;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
@@ -440,6 +440,282 @@ box-shadow:
       pointer-events: none !important;
     }
 
+
+    /* v59 완성도 보정: 기능 유지, 버튼/폼 유리감 통일, 눌림 이동 제거 */
+    :root {
+      --login-btn: #e2e3e2;
+      --sub-btn: #e2e3e8;
+      --cs-btn: #2e8bef;
+      --ink-dark: #101010;
+    }
+
+    .input-box input {
+      height: 45px;
+      border-radius: 9px;
+      background: linear-gradient(180deg, #f7f7f7 0%, #e8e8e8 100%);
+      border: 1px solid rgba(35, 35, 35, 0.30);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.88),
+        inset 0 -1px 0 rgba(0,0,0,0.08),
+        0 7px 14px rgba(0,0,0,0.08);
+    }
+
+    .btn-base,
+    .login-button,
+    .sub-buttons button,
+    .telegram-link {
+      border-radius: 10px !important;
+      border: 1px solid rgba(20, 20, 20, 0.28) !important;
+      position: relative;
+      overflow: hidden;
+      transform: none !important;
+      -webkit-transform: none !important;
+      transition: filter 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.82),
+        inset 0 -2px 0 rgba(0,0,0,0.10),
+        0 7px 14px rgba(0,0,0,0.13) !important;
+    }
+
+    .btn-base::after,
+    .login-button::after,
+    .sub-buttons button::after,
+    .telegram-link::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 3px;
+      height: 42%;
+      border-radius: 9px 9px 5px 5px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+
+    .login-button {
+      height: 47px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--login-btn) 54%, #c7c9c7 100%) !important;
+      color: var(--ink-dark) !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.70) !important;
+    }
+
+    .sub-buttons {
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .sub-buttons button {
+      height: 44px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--sub-btn) 54%, #c4c7d1 100%) !important;
+      color: #151515 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.70) !important;
+    }
+
+    /* 고객센터만 v55 스타일 입체감으로 복원 */
+    .telegram-link,
+    a.telegram-link.btn-base,
+    .customer-center-click-box.telegram-link {
+      height: 45px;
+      background: linear-gradient(180deg, #69c9ff 0%, #2e8bef 48%, #0b61bf 100%) !important;
+      border: 2px solid rgba(6, 61, 145, 0.55) !important;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -2px 0 rgba(0,0,0,0.18),
+        0 2px 0 rgba(6,61,145,0.26),
+        0 6px 10px rgba(0,0,0,0.12) !important;
+    }
+
+    .telegram-link::after,
+    a.telegram-link.btn-base::after {
+      background: linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.06)) !important;
+    }
+
+    .customer-text,
+    #customerCenterBtn {
+      color: #ffffff !important;
+      text-shadow: 0 2px 0 rgba(0, 58, 125, 0.36) !important;
+    }
+
+    button:hover,
+    .telegram-link:hover {
+      filter: brightness(1.035);
+    }
+
+    button:active,
+    .btn-base:active,
+    .login-button:active,
+    .telegram-link:active {
+      transform: none !important;
+      -webkit-transform: none !important;
+      filter: brightness(0.97) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.70),
+        inset 0 -1px 0 rgba(0,0,0,0.10),
+        0 5px 11px rgba(0,0,0,0.12) !important;
+    }
+
+
+    /* FINAL: 고객센터 버튼 - 이미지 참고 스타일(고객센터만 적용) */
+    a.telegram-link.btn-base.customer-center-click-box,
+    a.telegram-link.btn-base,
+    .telegram-link {
+      height: 45px !important;
+      border-radius: 7px !important;
+      background: linear-gradient(180deg, #68d6ff 0%, #18a7ea 48%, #0787d8 72%, #0474c7 100%) !important;
+      border: 4px solid #15699c !important;
+      box-shadow:
+        inset 0 4px 0 rgba(255,255,255,0.42),
+        inset 0 -4px 0 rgba(0,68,128,0.38),
+        0 3px 0 #0a568a,
+        0 8px 0 rgba(65,65,65,0.38),
+        0 10px 16px rgba(0,0,0,0.18) !important;
+      overflow: hidden !important;
+    }
+
+    a.telegram-link.btn-base.customer-center-click-box::after,
+    a.telegram-link.btn-base::after,
+    .telegram-link::after {
+      content: "" !important;
+      position: absolute !important;
+      left: 7px !important;
+      right: 7px !important;
+      top: 4px !important;
+      height: 28% !important;
+      border-radius: 5px 5px 2px 2px !important;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.10)) !important;
+      pointer-events: none !important;
+    }
+
+    #customerCenterBtn,
+    .customer-text {
+      color: #173154 !important;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.32),
+        0 2px 0 rgba(0,54,110,0.18) !important;
+    }
+
+    a.telegram-link.btn-base.customer-center-click-box:active,
+    a.telegram-link.btn-base:active,
+    .telegram-link:active {
+      transform: none !important;
+      -webkit-transform: none !important;
+      filter: brightness(0.98) !important;
+      box-shadow:
+        inset 0 4px 0 rgba(255,255,255,0.42),
+        inset 0 -4px 0 rgba(0,68,128,0.38),
+        0 3px 0 #0a568a,
+        0 8px 0 rgba(65,65,65,0.38),
+        0 10px 16px rgba(0,0,0,0.18) !important;
+    }
+
+
+    /* FINAL FIX: 고객센터 버튼만 - 외부 입체 그림자 제거, 코드 CSS 수정 */
+    a.telegram-link.btn-base,
+    a.telegram-link.btn-base.customer-center-click-box,
+    .telegram-link {
+      height: 45px !important;
+      border-radius: 7px !important;
+      background: linear-gradient(180deg, #63d7ff 0%, #28b9f5 45%, #0b92df 75%, #0577c8 100%) !important;
+      border: 4px solid #15699c !important;
+      box-shadow:
+        inset 0 4px 0 rgba(255,255,255,0.42),
+        inset 0 -3px 0 rgba(0,74,140,0.28) !important;
+      overflow: hidden !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    a.telegram-link.btn-base::after,
+    a.telegram-link.btn-base.customer-center-click-box::after,
+    .telegram-link::after {
+      content: "" !important;
+      position: absolute !important;
+      left: 7px !important;
+      right: 7px !important;
+      top: 4px !important;
+      height: 28% !important;
+      border-radius: 5px 5px 2px 2px !important;
+      background: linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.08)) !important;
+      pointer-events: none !important;
+    }
+
+    #customerCenterBtn,
+    .customer-text {
+      color: #173154 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.32) !important;
+    }
+
+    a.telegram-link.btn-base:active,
+    a.telegram-link.btn-base.customer-center-click-box:active,
+    .telegram-link:active {
+      transform: none !important;
+      -webkit-transform: none !important;
+      filter: brightness(0.98) !important;
+      box-shadow:
+        inset 0 4px 0 rgba(255,255,255,0.42),
+        inset 0 -3px 0 rgba(0,74,140,0.28) !important;
+    }
+
+
+    /* FINAL EXACT: 고객센터 버튼만 - 이미지형 파란 박스, 외부 그림자 완전 제거 */
+    a.telegram-link.btn-base,
+    a.telegram-link.btn-base.customer-center-click-box,
+    .telegram-link,
+    .customer-center-click-box.telegram-link {
+      background: linear-gradient(180deg, #63c9f4 0%, #22a5e9 46%, #087bd0 100%) !important;
+      border: 2px solid #0b5a8f !important;
+      border-radius: 5px !important;
+      box-shadow: none !important;
+      filter: none !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+      overflow: hidden !important;
+    }
+
+    a.telegram-link.btn-base::before,
+    a.telegram-link.btn-base.customer-center-click-box::before,
+    .telegram-link::before,
+    .customer-center-click-box.telegram-link::before {
+      content: "" !important;
+      position: absolute !important;
+      left: 3px !important;
+      right: 3px !important;
+      top: 3px !important;
+      height: 5px !important;
+      border-radius: 4px !important;
+      background: rgba(255, 255, 255, 0.42) !important;
+      pointer-events: none !important;
+    }
+
+    a.telegram-link.btn-base::after,
+    a.telegram-link.btn-base.customer-center-click-box::after,
+    .telegram-link::after,
+    .customer-center-click-box.telegram-link::after {
+      content: none !important;
+      display: none !important;
+      box-shadow: none !important;
+      background: none !important;
+    }
+
+    #customerCenterBtn,
+    .customer-text {
+      color: #123e65 !important;
+      font-weight: 900 !important;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+      letter-spacing: -0.5px !important;
+    }
+
+    a.telegram-link.btn-base:active,
+    a.telegram-link.btn-base.customer-center-click-box:active,
+    .telegram-link:active,
+    .customer-center-click-box.telegram-link:active {
+      background: linear-gradient(180deg, #63c9f4 0%, #22a5e9 46%, #087bd0 100%) !important;
+      box-shadow: none !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+      filter: none !important;
+    }
+
   </style>
 </head>
 
@@ -479,6 +755,7 @@ box-shadow:
 
   <script>
     const LOGIN_STORAGE_KEY = "signupMembers";
+    const LOGIN_SESSION_KEY = "currentLoginMember";
     const loginBtn = document.getElementById("loginBtn");
     const loginUserId = document.getElementById("loginUserId");
     const loginPassword = document.getElementById("loginPassword");
@@ -542,6 +819,12 @@ box-shadow:
       }
 
       if (idMember.status === "approved") {
+        localStorage.setItem(LOGIN_SESSION_KEY, JSON.stringify({
+          userId: idMember.userId || userId,
+          nickname: idMember.nickname || "",
+          status: "approved",
+          loginAt: new Date().toISOString()
+        }));
         location.href = "../main/main.html";
         return;
       }
