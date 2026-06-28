@@ -420,6 +420,26 @@ box-shadow:
       opacity: 1 !important;
     }
 
+  
+    /* v51 로그인 안내 문구 강제 표시 */
+    #loginMessage,
+    .login-message {
+      min-height: 22px !important;
+      margin-top: 9px !important;
+      margin-bottom: 2px !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      color: #b00020;
+      text-align: center !important;
+      line-height: 1.35 !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 10 !important;
+      pointer-events: none !important;
+    }
+
   </style>
 </head>
 
@@ -472,45 +492,66 @@ box-shadow:
       }
     }
 
-    function showLoginMessage(text, color) {
-      if (!loginMessage) return;
-      loginMessage.textContent = text;
-      loginMessage.style.color = color || "#b00020";
-      loginMessage.style.display = "block";
-      loginMessage.style.visibility = "visible";
-      loginMessage.style.opacity = "1";
+    function showLoginMessage(text, color, useAlert) {
+      if (loginMessage) {
+        loginMessage.textContent = text;
+        loginMessage.style.color = color || "#b00020";
+        loginMessage.style.display = "block";
+        loginMessage.style.visibility = "visible";
+        loginMessage.style.opacity = "1";
+      }
+
+      if (useAlert) {
+        alert(text);
+      }
     }
 
     function runLoginCheck() {
       const userId = loginUserId ? loginUserId.value.trim() : "";
       const password = loginPassword ? loginPassword.value.trim() : "";
 
-      if (!userId || !password) {
-        showLoginMessage("아이디 비밀번호를 입력해주세요", "#b00020");
+      if (!userId && !password) {
+        showLoginMessage("아이디 비밀번호를 입력해주세요", "#b00020", true);
+        return;
+      }
+
+      if (!userId) {
+        showLoginMessage("아이디를 입력해주세요", "#b00020", true);
+        return;
+      }
+
+      if (!password) {
+        showLoginMessage("비밀번호를 입력해주세요", "#b00020", true);
         return;
       }
 
       const members = getLoginMembers();
-      const member = members.find(function(item) {
-        return item.userId === userId && item.password === password;
+
+      const idMember = members.find(function(item) {
+        return String(item.userId || "") === userId;
       });
 
-      if (!member) {
-        showLoginMessage("존재하지 않는 정보입니다.", "#b00020");
+      if (!idMember) {
+        showLoginMessage("존재하지 않는 정보입니다.", "#b00020", true);
         return;
       }
 
-      if (member.status === "approved") {
+      if (String(idMember.password || "") !== password) {
+        showLoginMessage("비밀번호가 맞지 않습니다.", "#b00020", true);
+        return;
+      }
+
+      if (idMember.status === "approved") {
         location.href = "../main/main.html";
         return;
       }
 
-      if (member.status === "rejected") {
-        showLoginMessage("회원가입이 거절되었습니다.", "#b00020");
+      if (idMember.status === "rejected") {
+        showLoginMessage("회원가입이 거절되었습니다.", "#b00020", true);
         return;
       }
 
-      showLoginMessage("텔레그램 문의", "#006a9e");
+      showLoginMessage("텔레그램 문의", "#006a9e", true);
     }
 
     if (loginBtn) {
