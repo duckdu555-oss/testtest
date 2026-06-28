@@ -391,6 +391,42 @@
       -webkit-transform: translateZ(0) !important;
     }
 
+  
+    /* 모바일 클릭/포커스 시 화면 흔들림 방지 */
+    html {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    input,
+    button {
+      font-size: 16px !important;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .login-card,
+    .login-box,
+    .wrap,
+    .container {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
   </style>
 </head>
 
@@ -406,11 +442,11 @@
     <!-- 로그인폼 -->
     <section class="login-panel">
       <div class="input-box">
-        <input id="loginUserId" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <input id="loginUserId" placeholder="ID" autocapitalize="off" autocorrect="off" spellcheck="false">
       </div>
 
       <div class="input-box">
-        <input id="loginPassword">
+        <input id="loginPassword" type="password" placeholder="PW">
       </div>
 
       <button type="button" class="login-button btn-base login-btn" id="loginBtn">로그인</button>
@@ -576,25 +612,42 @@
     });
   </script>
 
-
   <script>
-    // 아이디 칸만 클릭할 때 화면이 살짝 아래로 튀는 현상 방지
-    const loginIdFixInput = document.getElementById("loginUserId");
+    // 로그인 화면에서 클릭/입력 포커스 시 화면 위치가 튀는 현상 방지
+    (function () {
+      let lockedX = 0;
+      let lockedY = 0;
 
-    if (loginIdFixInput) {
-      loginIdFixInput.addEventListener("focus", function() {
-        const currentX = window.scrollX;
-        const currentY = window.scrollY;
+      function rememberScroll() {
+        lockedX = window.scrollX || 0;
+        lockedY = window.scrollY || 0;
+      }
 
-        requestAnimationFrame(function() {
-          window.scrollTo(currentX, currentY);
-        });
+      function restoreScroll() {
+        window.scrollTo(lockedX, lockedY);
+      }
 
-        setTimeout(function() {
-          window.scrollTo(currentX, currentY);
-        }, 80);
+      document.addEventListener("touchstart", rememberScroll, { passive: true });
+      document.addEventListener("mousedown", rememberScroll, { passive: true });
+
+      document.querySelectorAll("input, button").forEach(function (el) {
+        el.addEventListener("focus", function () {
+          rememberScroll();
+          requestAnimationFrame(restoreScroll);
+          setTimeout(restoreScroll, 60);
+          setTimeout(restoreScroll, 160);
+        }, { passive: true });
+
+        el.addEventListener("click", function () {
+          requestAnimationFrame(restoreScroll);
+          setTimeout(restoreScroll, 60);
+        }, { passive: true });
+      });
+
+      window.addEventListener("resize", function () {
+        requestAnimationFrame(restoreScroll);
       }, { passive: true });
-    }
+    })();
   </script>
 
 </body>
