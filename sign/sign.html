@@ -113,15 +113,8 @@
       background: #fff;
     }
 
-    .phone-row,
-    .verify-row {
-      display: flex;
-      gap: 7px;
-    }
-
-    .phone-row input,
-    .verify-row input {
-      flex: 1;
+    .phone-row {
+      display: block;
     }
 
     .small-btn {
@@ -143,8 +136,8 @@
       margin-top: 10px;
       border-radius: 7px;
       border: 1px solid rgba(60, 60, 60, 0.22);
-      background: #8a8a8a;
-      color: #000;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e3e8 52%, #c9cbd2 100%);
+      color: #fff;
       font-family: inherit;
       font-size: 17px;
       cursor: pointer;
@@ -157,6 +150,22 @@
       color: #222;
       text-decoration: none;
       font-size: 14px;
+    }
+
+
+    .upload-title {
+      margin: 12px 0 8px;
+      text-align: center;
+      font-size: 15px;
+      color: #111;
+      letter-spacing: 0.5px;
+    }
+
+    .form-row input[type="file"] {
+      padding: 9px 8px;
+      height: auto;
+      font-size: 12px;
+      background: #eeeeee;
     }
 
     .notice {
@@ -320,6 +329,71 @@
       text-align: center;
     }
 
+
+    /* v59 회원가입 화면 시각 보정: 기능 유지 */
+    .signup-panel {
+      border-radius: 13px;
+      background: linear-gradient(180deg, rgba(222,222,222,0.96) 0%, rgba(205,205,205,0.96) 100%);
+      border: 1px solid rgba(35,35,35,0.20);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+    }
+
+    .form-row input,
+    .form-row select {
+      height: 44px;
+      border-radius: 9px;
+      background: linear-gradient(180deg, #f9f9f9 0%, #eeeeee 100%);
+      border: 1px solid rgba(35,35,35,0.24);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.88),
+        inset 0 -1px 0 rgba(0,0,0,0.06),
+        0 5px 10px rgba(0,0,0,0.06);
+    }
+
+    .submit-btn,
+    .complete-confirm {
+      border-radius: 10px !important;
+      border: 1px solid rgba(20,20,20,0.28) !important;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e3e8 54%, #c4c7d1 100%) !important;
+      color: #151515 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.70) !important;
+      position: relative;
+      overflow: hidden;
+      transform: none !important;
+      -webkit-transform: none !important;
+      transition: filter 0.14s ease, box-shadow 0.14s ease !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.82),
+        inset 0 -2px 0 rgba(0,0,0,0.10),
+        0 7px 14px rgba(0,0,0,0.13) !important;
+    }
+
+    .submit-btn::after,
+    .complete-confirm::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 3px;
+      height: 42%;
+      border-radius: 9px 9px 5px 5px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+
+    .submit-btn:active,
+    .complete-confirm:active {
+      transform: none !important;
+      -webkit-transform: none !important;
+      filter: brightness(0.97) !important;
+    }
+
+    .upload-title {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0,0,0,0.14);
+    }
+
   </style>
 </head>
 
@@ -348,18 +422,7 @@
 
       <div class="form-row">
         <label for="phone">휴대폰번호</label>
-        <div class="phone-row">
-          <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]*" required>
-          <button class="small-btn" type="button" id="sendCodeBtn">인증번호전송</button>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label for="verifyCode">인증번호</label>
-        <div class="verify-row">
-          <input id="verifyCode" name="verifyCode" type="text" inputmode="numeric" required>
-          <button class="small-btn" type="button" id="verifyBtn">확인</button>
-        </div>
+        <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="11" autocomplete="tel" required>
       </div>
 
       <div class="form-row">
@@ -398,12 +461,25 @@
       </div>
 <div class="form-row">
         <label for="accountNumber">계좌번호</label>
-        <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="[0-9]*" required>
+        <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="20" autocomplete="off" required>
       </div>
 
       <div class="form-row">
         <label for="exchangePassword">환전비밀번호</label>
         <input id="exchangePassword" name="exchangePassword" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" title="숫자 4자리" required>
+      </div>
+
+
+      <div class="upload-title">-이용내역-</div>
+
+      <div class="form-row">
+        <label for="historyImage1">사진 업로드 1</label>
+        <input id="historyImage1" name="historyImage1" type="file" accept="image/*">
+      </div>
+
+      <div class="form-row">
+        <label for="historyImage2">사진 업로드 2</label>
+        <input id="historyImage2" name="historyImage2" type="file" accept="image/*">
       </div>
 
       <div class="notice" id="noticeText"></div>
@@ -422,7 +498,6 @@
 
 
   <script>
-    let verified = false;
     const STORAGE_KEY = "signupMembers";
     const noticeText = document.getElementById("noticeText");
     const completeModal = document.getElementById("completeModal");
@@ -440,15 +515,54 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
     }
 
+    function readImageFile(inputId) {
+      const input = document.getElementById(inputId);
+      const file = input && input.files && input.files[0] ? input.files[0] : null;
+
+      return new Promise(function(resolve) {
+        if (!file) {
+          resolve({ name: "", data: "" });
+          return;
+        }
+
+        if (!file.type || !file.type.startsWith("image/")) {
+          resolve({ error: "이미지 파일만 업로드할 수 있습니다." });
+          return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+          resolve({ error: "사진은 1장당 2MB 이하만 업로드 가능합니다." });
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function() {
+          resolve({ name: file.name, data: String(reader.result || "") });
+        };
+        reader.onerror = function() {
+          resolve({ error: "사진을 읽지 못했습니다." });
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
     function onlyNumbers(el) {
+      if (!el) return;
       el.value = el.value.replace(/[^0-9]/g, "");
     }
 
-    ["phone", "verifyCode", "accountNumber", "exchangePassword"].forEach(function(id) {
+    ["phone", "accountNumber", "exchangePassword"].forEach(function(id) {
       const el = document.getElementById(id);
       if (el) {
-        el.addEventListener("input", function() {
-          onlyNumbers(el);
+        ["input", "change", "blur"].forEach(function(eventName) {
+          el.addEventListener(eventName, function() {
+            onlyNumbers(el);
+          });
+        });
+        el.addEventListener("paste", function() {
+          setTimeout(function() {
+            onlyNumbers(el);
+          }, 0);
         });
       }
     });
@@ -480,33 +594,7 @@
       return true;
     }
 
-    document.getElementById("sendCodeBtn").addEventListener("click", function() {
-      const phone = document.getElementById("phone").value.trim();
-
-      if (!/^[0-9]+$/.test(phone)) {
-        setError("phone", "휴대폰 번호는 숫자만 입력하세요.");
-        return;
-      }
-
-      clearErrors();
-      noticeText.textContent = "인증번호가 전송되었습니다.";
-    });
-
-    document.getElementById("verifyBtn").addEventListener("click", function() {
-      const code = document.getElementById("verifyCode").value.trim();
-
-      if (!/^[0-9]+$/.test(code)) {
-        verified = false;
-        setError("verifyCode", "인증번호는 숫자만 입력하세요.");
-        return;
-      }
-
-      clearErrors();
-      verified = true;
-      noticeText.textContent = "인증번호 확인 완료";
-    });
-
-    document.getElementById("signupForm").addEventListener("submit", function(e) {
+    document.getElementById("signupForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       clearErrors();
 
@@ -514,7 +602,6 @@
       const password = document.getElementById("password").value.trim();
       const nickname = document.getElementById("nickname").value.trim();
       const phone = document.getElementById("phone").value.trim();
-      const verifyCode = document.getElementById("verifyCode").value.trim();
       const realName = document.getElementById("realName").value.trim();
       const bank = document.getElementById("bank").value.trim();
 const accountNumber = document.getElementById("accountNumber").value.trim();
@@ -524,7 +611,6 @@ const accountNumber = document.getElementById("accountNumber").value.trim();
       if (!requireValue("password", "비밀번호를 입력하세요.")) return;
       if (!requireValue("nickname", "닉네임을 입력하세요.")) return;
       if (!requireValue("phone", "휴대폰 번호를 입력하세요.")) return;
-      if (!requireValue("verifyCode", "인증번호를 입력하세요.")) return;
       if (!requireValue("realName", "이름을 입력하세요.")) return;
       if (!bank) return setError("bank", "은행정보를 선택하세요.");
       if (!requireValue("accountNumber", "계좌번호를 입력하세요.")) return;
@@ -542,10 +628,6 @@ const accountNumber = document.getElementById("accountNumber").value.trim();
         return setError("phone", "휴대폰 번호는 숫자만 입력하세요.");
       }
 
-      if (!verified) {
-        noticeText.textContent = "휴대폰 인증을 먼저 완료하세요.";
-        return;
-      }
 if (!/^[0-9]+$/.test(accountNumber)) {
         return setError("accountNumber", "계좌번호는 숫자만 입력하세요.");
       }
@@ -568,6 +650,19 @@ if (!/^[0-9]+$/.test(accountNumber)) {
         return setError("accountNumber", "이미 등록된 계좌번호입니다.");
       }
 
+      const historyImage1 = await readImageFile("historyImage1");
+      const historyImage2 = await readImageFile("historyImage2");
+
+      if (historyImage1.error) {
+        noticeText.textContent = historyImage1.error;
+        return;
+      }
+
+      if (historyImage2.error) {
+        noticeText.textContent = historyImage2.error;
+        return;
+      }
+
       const member = {
         nickname: nickname,
         realName: realName,
@@ -578,6 +673,8 @@ if (!/^[0-9]+$/.test(accountNumber)) {
         userId: userId,
         password: password,
         exchangePassword: exchangePassword,
+        historyImage1: historyImage1,
+        historyImage2: historyImage2,
         status: "pending",
         createdAt: new Date().toISOString()
       };
